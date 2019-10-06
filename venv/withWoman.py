@@ -111,7 +111,7 @@ while run:
 
     if bullet.x == enemy.x or bullet.x >= enemy.x and bullet.x <= enemy.x + enemy.width:
         enemy.x += bullet.speed
-
+#poka
     if keys[pygame.K_1]:
         manControl = True
         womanControl = False
