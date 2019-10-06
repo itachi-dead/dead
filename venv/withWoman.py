@@ -78,13 +78,14 @@ def redrawGameWindow():
     man.draw(window)
     woman.draw(window)
     enemy.draw(window)
-    bullet.draw(window)
+    for bullet in bullets:
+        bullet.draw(window)
     pygame.display.update()
-bullet = projectile(50, 50, 10, (0, 0, 0), 1)
+
 man = player(50, 400, 64 , 64)
 woman = player(200, 400, 64 , 64)
 enemy = player(600, 400, 64, 64)
-
+bullets = []
 manControl = True
 womanControl = False
 
@@ -100,24 +101,25 @@ while run:
 
 
     keys = pygame.key.get_pressed();
-    if keys[pygame.K_f]:
+    if keys[pygame.K_v]:
         if man.left:
             facing = -1
         if man.right:
             facing = 1
-        bullet = projectile(man.x, man.y, 10, (0, 0, 0), facing)
+        bullets.append(projectile(int(man.x), int(man.y), 10, (0, 0, 0), facing))
 
-    bullet.x += bullet.speed
+    for bullet in bullets:
+        bullet.x += bullet.speed
+        if (bullet.x == enemy.x and enemy.x < windowX - enemy.width - enemy.speed) or ( bullet.x >= enemy.x and bullet.x <= enemy.x + enemy.width and enemy.x < windowX - enemy.width - enemy.speed):
+            enemy.x += bullet.speed
 
-    if bullet.x == enemy.x or bullet.x >= enemy.x and bullet.x <= enemy.x + enemy.width:
-        enemy.x += bullet.speed
-#poka
+
     if keys[pygame.K_1]:
         manControl = True
         womanControl = False
     elif keys[pygame.K_2]:
-            manControl = False
-            womanControl = True
+        manControl = False
+        womanControl = True
 
     if manControl:
         if keys[pygame.K_RIGHT] and man.x < windowX - man.width - man.speed:
@@ -179,6 +181,7 @@ while run:
                 woman.IsJump = False
                 woman.jumpm = -10
                 woman.jumpp = 10
+
     if keys[pygame.K_d] and enemy.x < windowX - enemy.width - enemy.speed:
         enemy.x+=enemy.speed
         enemy.right = True
